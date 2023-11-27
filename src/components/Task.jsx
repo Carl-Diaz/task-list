@@ -1,4 +1,4 @@
-// src/components/Task.js
+
 import React, { useState } from "react";
 
 const Task = ({ id, name, completed, onToggle, onDelete, onEdit }) => {
