@@ -1,4 +1,3 @@
-// src/components/Task.js
 import React, { useState } from "react";
 
 const Task = ({ id, name, completed, onToggle, onDelete, onEdit }) => {
@@ -28,12 +27,17 @@ const Task = ({ id, name, completed, onToggle, onDelete, onEdit }) => {
         </div>
       ) : (
         <div>
-          <input type="checkbox" checked={completed} onChange={onToggle} />
           <span style={{ textDecoration: completed ? "line-through" : "none" }}>
             {name}
           </span>
-          <button onClick={handleEditClick}>Edit</button>
-          <button onClick={onDelete}>Delete</button>
+          <input
+            type="checkbox"
+            checked={completed}
+            onChange={(e) => onToggle(id)}
+          />
+
+          <button onClick={handleEditClick}>Editar</button>
+          <button onClick={() => onDelete(id)}>Eliminar</button>
         </div>
       )}
     </div>

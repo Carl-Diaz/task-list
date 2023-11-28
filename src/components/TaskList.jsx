@@ -1,4 +1,3 @@
-// src/components/TaskList.js
 import React from "react";
 import Task from "./Task";
 
@@ -12,7 +11,7 @@ const TaskList = ({ tasks, onToggle, onDelete, onEdit }) => {
           id={task.id}
           name={task.name}
           completed={task.completed}
-          onToggle={() => onToggle(task.id)}
+          onToggle={onToggle}
           onDelete={() => onDelete(task.id)}
           onEdit={onEdit}
         />

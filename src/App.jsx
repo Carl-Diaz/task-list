@@ -1,69 +1,19 @@
-// src/App.js
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useState } from "react";
 import Header from "./components/Header";
 import TaskList from "./components/TaskList";
+import useTaskManager from "./hooks/useTaskManager";
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
+  const { tasks, createTask, deleteTask, updateTask, toggleTask } =
+    useTaskManager();
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
 
-  useEffect(() => {
-    // Cargar tareas desde localStorage al iniciar la aplicación
-    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    setTasks(savedTasks);
-  }, []); // Se ejecuta al montar el componente
-
-  const saveTasksToLocalStorage = (updatedTasks) => {
-    // Guardar tareas en localStorage
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-  };
-
   const addTask = () => {
-    if (newTaskTitle.trim() !== "") {
-      const newTask = {
-        id: Date.now(),
-        name: `${newTaskTitle} - ${newTaskDescription}`,
-        completed: false,
-      };
-      setTasks((prevTasks) => {
-        const updatedTasks = [...prevTasks, newTask];
-        saveTasksToLocalStorage(updatedTasks);
-        return updatedTasks;
-      });
-      setNewTaskTitle("");
-      setNewTaskDescription("");
-    }
-  };
-
-  const deleteTask = (taskId) => {
-    setTasks((prevTasks) => {
-      const updatedTasks = prevTasks.filter((task) => task.id !== taskId);
-      saveTasksToLocalStorage(updatedTasks);
-      return updatedTasks;
-    });
-  };
-
-  const toggleTask = (taskId) => {
-    setTasks((prevTasks) => {
-      const updatedTasks = prevTasks.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      );
-      saveTasksToLocalStorage(updatedTasks);
-      return updatedTasks;
-    });
-  };
-
-  const editTask = (taskId, editedTitle, editedDescription) => {
-    setTasks((prevTasks) => {
-      const updatedTasks = prevTasks.map((task) =>
-        task.id === taskId
-          ? { ...task, name: `${editedTitle} - ${editedDescription}` }
-          : task
-      );
-      saveTasksToLocalStorage(updatedTasks);
-      return updatedTasks;
-    });
+    createTask(newTaskTitle, newTaskDescription);
+    setNewTaskTitle("");
+    setNewTaskDescription("");
   };
 
   return (
@@ -87,9 +37,9 @@ const App = () => {
       </div>
       <TaskList
         tasks={tasks}
-        onToggle={toggleTask}
+        onToggle={toggleTask} // Asegúrate de pasar la función correcta aquí
         onDelete={deleteTask}
-        onEdit={editTask}
+        onEdit={updateTask}
       />
     </div>
   );
