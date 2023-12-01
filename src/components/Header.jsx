@@ -1,8 +1,8 @@
-const Header = () => {
+const Header = ({ title }) => {
   return (
-    <header>
-      <h1>My React Task List</h1>
-    </header>
+    <div>
+      <h1>{title}</h1>
+    </div>
   );
 };
 

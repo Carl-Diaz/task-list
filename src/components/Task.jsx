@@ -1,47 +1,69 @@
 import React, { useState } from "react";
-
-const Task = ({ id, name, completed, onToggle, onDelete, onEdit }) => {
+import { MdEdit, MdDelete } from "react-icons/md";
+const Task = ({ task, onDelete, onToggleStatus, onEdit }) => {
+  // Estado para controlar si la tarea está en modo de edición
   const [isEditing, setEditing] = useState(false);
-  const [editedName, setEditedName] = useState(name);
+  // Estado para almacenar los cambios en el título y la descripción durante la edición
+  const [editedTask, setEditedTask] = useState({
+    title: task.title,
+    description: task.description,
+  });
 
-  const handleEditClick = () => {
+  // Manejar el inicio de la edición
+  const handleEdit = () => {
     setEditing(true);
   };
 
-  const handleSaveClick = () => {
-    const [editedTitle, editedDescription] = editedName.split(" - ");
-    onEdit(id, editedTitle, editedDescription);
+  // Manejar el guardado de los cambios durante la edición
+  const handleSave = () => {
+    onEdit(editedTask);
     setEditing(false);
   };
 
   return (
-    <div>
+    <li>
       {isEditing ? (
+        // Formulario de edición durante la edición
         <div>
           <input
             type="text"
-            value={editedName}
-            onChange={(e) => setEditedName(e.target.value)}
+            value={editedTask.title}
+            onChange={(e) =>
+              setEditedTask({ ...editedTask, title: e.target.value })
+            }
           />
-          <button onClick={handleSaveClick}>Save</button>
+          <input
+            type="text"
+            value={editedTask.description}
+            onChange={(e) =>
+              setEditedTask({ ...editedTask, description: e.target.value })
+            }
+          />
+          <button onClick={handleSave}>Guardar</button>
         </div>
       ) : (
+        // Vista normal de la tarea
         <div>
-          <span style={{ textDecoration: completed ? "line-through" : "none" }}>
-            {name}
-          </span>
           <input
             type="checkbox"
-            checked={completed}
-            onChange={(e) => onToggle(id)}
+            checked={task.status}
+            onChange={onToggleStatus}
           />
-
-          <button onClick={handleEditClick}>Editar</button>
-          <button onClick={() => onDelete(id)}>Eliminar</button>
+          <span style={{ display: "none" }}>
+            {task.status ? "Completada" : "Pendiente"}
+          </span>
+          <span>
+            {task.title} - {task.description}
+            <button onClick={handleEdit}>
+              <MdEdit />
+            </button>
+            <button onClick={onDelete}>
+              <MdDelete />
+            </button>
+          </span>
         </div>
       )}
-    </div>
+    </li>
   );
 };
-
 export default Task;
