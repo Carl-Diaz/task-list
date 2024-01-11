@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
+
 const Task = ({ task, onDelete, onToggleStatus, onEdit }) => {
-  // Estado para controlar si la tarea está en modo de edición
   const [isEditing, setEditing] = useState(false);
-  // Estado para almacenar los cambios en el título y la descripción durante la edición
   const [editedTask, setEditedTask] = useState({
     title: task.title,
     description: task.description,
   });
 
-  // Manejar el inicio de la edición
   const handleEdit = () => {
     setEditing(true);
   };
 
-  // Manejar el guardado de los cambios durante la edición
   const handleSave = () => {
     onEdit(editedTask);
     setEditing(false);
@@ -23,7 +20,6 @@ const Task = ({ task, onDelete, onToggleStatus, onEdit }) => {
   return (
     <li>
       {isEditing ? (
-        // Formulario de edición durante la edición
         <div>
           <input
             type="text"
@@ -39,10 +35,9 @@ const Task = ({ task, onDelete, onToggleStatus, onEdit }) => {
               setEditedTask({ ...editedTask, description: e.target.value })
             }
           />
-          <button onClick={handleSave}>Guardar</button>
+          <button onClick={handleSave}>Save</button>
         </div>
       ) : (
-        // Vista normal de la tarea
         <div>
           <input
             type="checkbox"
@@ -66,4 +61,5 @@ const Task = ({ task, onDelete, onToggleStatus, onEdit }) => {
     </li>
   );
 };
+
 export default Task;
